@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  dev-postgres:
+    image: postgres:15.1-alpine
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: katsu
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: todo
+    restart: always
+    networks:
+      - lesson
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_conatainer
+    ports:
+      - "8081:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - dev-postgres
+    networks:
+      - lesson
+
+networks:
+  lesson:
+
