@@ -13,7 +13,7 @@ import (
 //ユーザーに関する処理をまとめたインターフェース(設計図)を定義している
 type IUserUsecase interface {
 	SignUp(user model.User) (model.UserResponse, error)
-	Login(user model.User) (string, error)
+	LogIn(user model.User) (string, error)
 }
 
 //userUsecaseという構造体を一度インスタンス化(＝実態を作る)して、それを他の場所(ハンドラーなど)から繰り返し使いまわせるようにするため
@@ -47,7 +47,7 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 	return resUser, nil
 }
 
-func (uu *userUsecase) Login(user model.User) (string, error) {
+func (uu *userUsecase) LogIn(user model.User) (string, error) {
 	storedUser := model.User{}
 	if err := uu.ur.GetUserByEmail(&storedUser, user.Email); err != nil {
 		return "",err
@@ -58,7 +58,7 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 		return "",err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": storedUser.ID,
 		"exp":	   time.Now().Add(time.Hour * 12).Unix(),
 	})
