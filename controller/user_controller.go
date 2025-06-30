@@ -75,9 +75,9 @@ func (uc *userController) LogOut(c echo.Context) error {
 }
 
 func (uc *userController) CsrfToken(c echo.Context) error {
-	// token := c.Get("csrf").(string)
+	token := c.Get("csrf").(string)
 	return c.JSON(http.StatusOK, echo.Map{
-		"csrf_token": "dummy_csrf_token_for_debug", 
+		"csrf_token": token,
 	})
 }
 
